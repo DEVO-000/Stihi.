@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Стихи | DEVO+</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -444,6 +445,11 @@
             animation: slideDown 0.2s ease-out forwards;
         }
 
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         .sort-option {
             display: flex;
             align-items: center;
@@ -488,6 +494,16 @@
 
         .sort-option input[type="radio"] {
             display: none;
+        }
+
+        .sort-option.filter-active {
+            border-color: #10b981;
+        }
+        body.light .sort-option.filter-active {
+            background: rgba(16, 185, 129, 0.08);
+        }
+        body.dark .sort-option.filter-active {
+            background: rgba(16, 185, 129, 0.12);
         }
 
         .poem-selector {
@@ -631,6 +647,21 @@
         body.light .poem-option .num { color: rgba(0,0,0,0.25); }
         body.dark .poem-option .num { color: rgba(255,255,255,0.2); }
 
+        .poem-option .learned-badge {
+            font-size: 12px;
+            opacity: 0.5;
+            margin-left: 8px;
+        }
+        .poem-option.learned {
+            border-left: 3px solid #10b981;
+        }
+        body.light .poem-option.learned {
+            background: rgba(16, 185, 129, 0.05);
+        }
+        body.dark .poem-option.learned {
+            background: rgba(16, 185, 129, 0.08);
+        }
+
         .poem-card {
             border-radius: 20px;
             padding: 24px 20px 20px;
@@ -680,6 +711,61 @@
             gap: 8px;
             flex-shrink: 0;
             margin-left: auto;
+        }
+
+        .learned-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px 6px 8px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: transparent;
+        }
+        body.light .learned-btn {
+            color: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.06);
+        }
+        body.dark .learned-btn {
+            color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.06);
+        }
+        .learned-btn:hover {
+            background: rgba(0,0,0,0.07);
+            border-color: rgba(0,0,0,0.1);
+            transform: scale(1.05);
+        }
+        body.dark .learned-btn:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .learned-btn:active {
+            transform: scale(0.92);
+        }
+        .learned-btn .icon {
+            font-size: 14px;
+        }
+        .learned-btn.learned {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        body.light .learned-btn.learned {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+        body.dark .learned-btn.learned {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #34d399;
+            color: #34d399;
         }
 
         .speak-btn {
@@ -735,6 +821,11 @@
             color: #f0f0f0;
         }
 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
         .speak-btn svg {
             width: 16px;
             height: 16px;
@@ -748,6 +839,11 @@
         }
         .speak-btn.speaking svg {
             animation: wave 0.8s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
 
         .speak-btn .status-text {
@@ -832,6 +928,11 @@
         }
         .speech-settings .row:last-child {
             margin-bottom: 0;
+        }
+
+        @keyframes fadeInRow {
+            0% { opacity: 0; transform: translateX(-10px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         .speech-settings label {
@@ -994,6 +1095,11 @@
         body.light .poem-text { color: rgba(0, 0, 0, 0.4); }
         body.dark .poem-text { color: rgba(255, 255, 255, 0.3); }
 
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         .poem-block {
             display: inline;
             transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
@@ -1069,31 +1175,6 @@
         body.light .stats .num { color: rgba(0,0,0,0.5); }
         body.dark .stats .num { color: rgba(255,255,255,0.4); }
 
-        @keyframes slideDown {
-            0% { opacity: 0; transform: translateY(-8px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInText {
-            0% { opacity: 0; transform: translateY(8px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInRow {
-            0% { opacity: 0; transform: translateX(-10px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
         .poem-card {
             animation: slideDown 0.35s ease-out;
         }
@@ -1113,10 +1194,32 @@
             border-radius: 4px;
         }
 
+        /* Offline индикатор */
+        .offline-indicator {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #ef4444;
+            color: white;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            animation: slideDown 0.3s ease-out;
+        }
+        .offline-indicator.show {
+            display: block;
+        }
+
         @media (max-width: 400px) {
             .logo { font-size: 24px; }
             .poem-title { font-size: 13px; }
             .speak-btn { font-size: 10px; padding: 5px 10px 5px 8px; }
+            .learned-btn { font-size: 10px; padding: 5px 10px 5px 8px; }
             .poem-text { font-size: 15px; }
             .speech-settings .row { flex-direction: column; align-items: stretch; }
             .speech-settings .row label { min-width: auto; }
@@ -1141,6 +1244,9 @@
         </div>
         <div class="group-label">группа <span>1211</span></div>
     </header>
+
+    <!-- Offline индикатор -->
+    <div class="offline-indicator" id="offlineIndicator">📡 Офлайн-режим</div>
 
     <!-- Информационное модальное окно -->
     <div class="info-modal" id="infoModal" onclick="if(event.target===this) toggleInfoModal()">
@@ -1185,6 +1291,8 @@
             <p>3. <strong>Озвучка</strong> — нажмите кнопку 🔊, чтобы прослушать стихотворение. Во время озвучки подсвечивается текущий блок и слово.</p>
             <p>4. <strong>Настройки озвучки</strong> — ⚙️ открывает панель, где можно выбрать режим (по абзацам/предложениям), часть стиха, повтор, скорость и паузу.</p>
             <p>5. <strong>Тема</strong> — ☀/☾ переключает светлую и тёмную тему.</p>
+            <p>6. <strong>Выучено</strong> — кнопка 📖 отмечает стих как выученный. В списке они отмечаются зеленым.</p>
+            <p>7. <strong>Офлайн-режим</strong> — страница работает без интернета после первого открытия.</p>
 
             <div class="divider"></div>
 
@@ -1221,6 +1329,11 @@
                 <span>сначала длинные</span>
                 <input type="radio" name="sort" value="lengthDesc">
             </label>
+            <div style="height:1px; margin:4px 12px; background:rgba(0,0,0,0.06);" class="sort-divider"></div>
+            <label class="sort-option" data-value="filterLearned" onclick="toggleFilterLearned(this)">
+                <span>📚 только выученные</span>
+                <input type="radio" name="sort" value="filterLearned">
+            </label>
         </div>
     </div>
 
@@ -1236,6 +1349,10 @@
         <div class="poem-header">
             <span class="poem-title" id="poemName"></span>
             <div class="speech-controls">
+                <button class="learned-btn" id="learnedBtn" onclick="toggleLearned()">
+                    <span class="icon">📖</span>
+                    <span id="learnedStatus">выучить</span>
+                </button>
                 <button class="settings-btn" id="settingsToggle" onclick="toggleSettings()" title="Настройки озвучки">⚙</button>
                 <button class="speak-btn" id="speakBtn" onclick="toggleSpeech()">
                     <svg viewBox="0 0 24 24">
@@ -1308,11 +1425,71 @@
     </div>
 </div>
 
+<!-- Регистрация Service Worker -->
 <script>
+    // Регистрируем Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('✅ Service Worker зарегистрирован:', registration.scope);
+                
+                // Запрашиваем фоновую синхронизацию
+                if ('sync' in registration) {
+                    registration.sync.register('sync-poems')
+                        .then(() => {
+                            console.log('✅ Фоновая синхронизация зарегистрирована');
+                        })
+                        .catch(err => {
+                            console.warn('⚠️ Фоновая синхронизация не поддерживается:', err);
+                        });
+                }
+            })
+            .catch(error => {
+                console.warn('⚠️ Ошибка регистрации Service Worker:', error);
+            });
+        
+        // Проверяем обновления
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                refreshing = true;
+                window.location.reload();
+            }
+        });
+    }
+
+    // Отслеживаем статус сети
+    window.addEventListener('online', () => {
+        document.getElementById('offlineIndicator').classList.remove('show');
+    });
+    
+    window.addEventListener('offline', () => {
+        document.getElementById('offlineIndicator').classList.add('show');
+    });
+
+    // Функция для сохранения через Service Worker
+    function saveLearnedViaSW(poemId) {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'SAVE_LEARNED',
+                payload: {
+                    id: poemId,
+                    timestamp: Date.now()
+                }
+            });
+        }
+    }
+
+    // Сохраняем ссылку на оригинальную функцию
+    const originalToggleLearned = window.toggleLearned;
+</script>
+
+<script>
+// ===== ПОЭТЫ И СТИХИ =====
 const poemsData = [
     { 
         id: 0, 
-        title: "Н. А. Некрасов — «Русь» (из поэмы «Кому на Руси жить хорошо»)",
+        title: "Н. А. Некрасов — «Русь»",
         author: "Некрасов",
         text: `Ты и убогая,
 Ты и обильная,
@@ -1358,7 +1535,7 @@ const poemsData = [
     },
     { 
         id: 1,
-        title: "Ф. И. Тютчев — «Я встретил вас — и всё былое...»",
+        title: "Ф. И. Тютчев — «Я встретил вас...»",
         author: "Тютчев",
         text: `Я встретил вас — и все былое
 В отжившем сердце ожило;
@@ -1672,7 +1849,7 @@ const poemsData = [
     },
     { 
         id: 11,
-        title: "А. А. Ахматова — «Мне голос был. Он звал утешно...»",
+        title: "А. А. Ахматова — «Мне голос был...»",
         author: "Ахматова",
         text: `Мне голос был. Он звал утешно,
 Он говорил: «Иди сюда,
@@ -1817,8 +1994,7 @@ const poemsData = [
     }
 ];
 
-
-
+// ===== ПЕРЕМЕННЫЕ =====
 let currentFiltered = [...poemsData];
 let currentPoem = poemsData[0];
 let currentSort = 'default';
@@ -1832,10 +2008,162 @@ let customPart = 0;
 let repeatCount = 1;
 let speechRate = 0.85;
 let pauseBetween = 400;
-
 let currentActiveBlockNode = null;
 let currentParts = [];
 let currentTheme = 'dark';
+let isSpeechSupported = false;
+let filterLearnedActive = false;
+
+// ===== ФУНКЦИИ ДЛЯ ВЫУЧЕННЫХ СТИХОВ =====
+
+function getLearnedPoems() {
+    try {
+        const data = localStorage.getItem('learnedPoems');
+        return data ? JSON.parse(data) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveLearnedPoems(ids) {
+    try {
+        localStorage.setItem('learnedPoems', JSON.stringify(ids));
+    } catch (e) {
+        console.warn('Не удалось сохранить в localStorage');
+    }
+}
+
+function isPoemLearned(poemId) {
+    const learned = getLearnedPoems();
+    return learned.includes(poemId);
+}
+
+function toggleLearned() {
+    if (!currentPoem) return;
+    
+    const poemId = currentPoem.id;
+    let learned = getLearnedPoems();
+    const index = learned.indexOf(poemId);
+    
+    if (index === -1) {
+        learned.push(poemId);
+    } else {
+        learned.splice(index, 1);
+    }
+    
+    saveLearnedPoems(learned);
+    updateLearnedUI();
+    buildPoemList();
+    
+    // Отправляем через Service Worker
+    saveLearnedViaSW(poemId);
+}
+
+function updateLearnedUI() {
+    if (!currentPoem) return;
+    
+    const btn = document.getElementById('learnedBtn');
+    const status = document.getElementById('learnedStatus');
+    const isLearned = isPoemLearned(currentPoem.id);
+    
+    if (isLearned) {
+        btn.classList.add('learned');
+        status.textContent = 'выучено ✓';
+        btn.querySelector('.icon').textContent = '✅';
+    } else {
+        btn.classList.remove('learned');
+        status.textContent = 'выучить';
+        btn.querySelector('.icon').textContent = '📖';
+    }
+}
+
+function buildPoemList() {
+    const container = document.getElementById('poemDropdown');
+    container.innerHTML = '';
+    const learned = getLearnedPoems();
+    
+    currentFiltered.forEach((p, idx) => {
+        const opt = document.createElement('div');
+        opt.className = 'poem-option';
+        if (currentPoem && p.id === currentPoem.id) opt.classList.add('active');
+        if (learned.includes(p.id)) opt.classList.add('learned');
+        
+        const isLearned = learned.includes(p.id);
+        opt.innerHTML = `
+            <span>
+                <span class="num">${idx + 1}.</span> 
+                ${p.title}
+                ${isLearned ? '<span class="learned-badge">✅</span>' : ''}
+            </span>
+        `;
+        opt.onclick = () => selectPoem(p.id, true);
+        container.appendChild(opt);
+    });
+}
+
+function selectPoem(id, closeDropdown = true) {
+    const poem = currentFiltered.find(p => p.id === id);
+    if (!poem) return;
+    
+    currentPoem = poem;
+    document.getElementById('selectedPoemTitle').textContent = poem.title;
+    
+    if (closeDropdown) {
+        document.getElementById('poemDropdown').classList.remove('open');
+        document.getElementById('poemArrow').classList.remove('open');
+    }
+
+    buildPoemList();
+    showPoem(poem);
+    updateLearnedUI();
+    if (isSpeaking) stopSpeech();
+}
+
+// ===== ФИЛЬТР "ТОЛЬКО ВЫУЧЕННЫЕ" =====
+
+function toggleFilterLearned(el) {
+    filterLearnedActive = !filterLearnedActive;
+    el.classList.toggle('filter-active');
+    
+    if (filterLearnedActive) {
+        const learned = getLearnedPoems();
+        currentFiltered = poemsData.filter(p => learned.includes(p.id));
+        applySortToFiltered();
+    } else {
+        currentFiltered = [...poemsData];
+        applySortToFiltered();
+    }
+    
+    buildPoemList();
+    if (currentFiltered.length > 0) {
+        selectPoem(currentFiltered[0].id, false);
+    } else {
+        document.getElementById('selectedPoemTitle').textContent = 'Нет выученных стихов';
+        document.getElementById('poemName').textContent = '';
+        document.getElementById('poemText').innerHTML = '';
+    }
+}
+
+function applySortToFiltered() {
+    switch (currentSort) {
+        case 'titleAsc': 
+            currentFiltered.sort((a,b) => a.title.localeCompare(b.title, 'ru')); 
+            break;
+        case 'titleDesc': 
+            currentFiltered.sort((a,b) => b.title.localeCompare(a.title, 'ru')); 
+            break;
+        case 'lengthAsc': 
+            currentFiltered.sort((a,b) => a.text.length - b.text.length); 
+            break;
+        case 'lengthDesc': 
+            currentFiltered.sort((a,b) => b.text.length - a.text.length); 
+            break;
+        default: 
+            currentFiltered.sort((a,b) => a.id - b.id);
+    }
+}
+
+// ===== ТЕМА =====
 
 function toggleTheme() {
     const body = document.body;
@@ -1853,11 +2181,15 @@ function toggleTheme() {
     }
 }
 
+// ===== ИНФО МОДАЛЬНОЕ ОКНО =====
+
 function toggleInfoModal() {
     const modal = document.getElementById('infoModal');
     modal.classList.toggle('open');
     document.body.style.overflow = modal.classList.contains('open') ? 'hidden' : '';
 }
+
+// ===== СОРТИРОВКА =====
 
 function toggleSortDropdown() {
     const dd = document.getElementById('sortDropdown');
@@ -1890,7 +2222,13 @@ function applySorting() {
 
 function selectSort(value, el) {
     currentSort = value;
-    document.querySelectorAll('.sort-option').forEach(opt => opt.classList.remove('active'));
+    document.querySelectorAll('.sort-option').forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.dataset.value === 'filterLearned') {
+            opt.classList.remove('filter-active');
+            filterLearnedActive = false;
+        }
+    });
     el.classList.add('active');
     el.querySelector('input[type="radio"]').checked = true;
 
@@ -1906,12 +2244,22 @@ function selectSort(value, el) {
     };
     document.getElementById('sortLabel').textContent = labels[value] || value;
 
-    applySorting();
-
+    if (filterLearnedActive) {
+        const learned = getLearnedPoems();
+        currentFiltered = poemsData.filter(p => learned.includes(p.id));
+        applySortToFiltered();
+    } else {
+        currentFiltered = [...poemsData];
+        applySorting();
+    }
+    
+    buildPoemList();
     if (currentFiltered.length > 0) {
         selectPoem(currentFiltered[0].id, false);
     }
 }
+
+// ===== ВЫБОР СТИХА =====
 
 function togglePoemDropdown() {
     const dd = document.getElementById('poemDropdown');
@@ -1920,35 +2268,7 @@ function togglePoemDropdown() {
     arrow.classList.toggle('open');
 }
 
-function buildPoemList() {
-    const container = document.getElementById('poemDropdown');
-    container.innerHTML = '';
-    currentFiltered.forEach((p, idx) => {
-        const opt = document.createElement('div');
-        opt.className = 'poem-option';
-        if (currentPoem && p.id === currentPoem.id) opt.classList.add('active');
-        opt.innerHTML = `<span><span class="num">${idx + 1}.</span> ${p.title}</span>`;
-        opt.onclick = () => selectPoem(p.id, true);
-        container.appendChild(opt);
-    });
-}
-
-function selectPoem(id, closeDropdown = true) {
-    const poem = currentFiltered.find(p => p.id === id);
-    if (!poem) return;
-    
-    currentPoem = poem;
-    document.getElementById('selectedPoemTitle').textContent = poem.title;
-    
-    if (closeDropdown) {
-        document.getElementById('poemDropdown').classList.remove('open');
-        document.getElementById('poemArrow').classList.remove('open');
-    }
-
-    buildPoemList();
-    showPoem(poem);
-    if (isSpeaking) stopSpeech();
-}
+// ===== ОТОБРАЖЕНИЕ ТЕКСТА =====
 
 function getTextParts(fullText) {
     let parts = [];
@@ -2014,6 +2334,8 @@ function showPoem(poem) {
     document.getElementById('wordCount').textContent = text.split(/\s+/).filter(w => w.length > 0).length;
     document.getElementById('lineCount').textContent = text.split('\n').filter(l => l.trim().length > 0).length;
 }
+
+// ===== НАСТРОЙКИ =====
 
 function toggleSettings() {
     const panel = document.getElementById('speechSettings');
@@ -2088,23 +2410,191 @@ function updatePause(val) {
     document.getElementById('pauseValue').textContent = (val / 1000).toFixed(1) + 'с';
 }
 
-function initSpeech() {
+// ===== SPEECH SYNTHESIS =====
+
+function initSpeechSynthesis() {
     if (!window.speechSynthesis) {
-        document.getElementById('speakBtn').style.opacity = '0.3';
-        document.getElementById('speakBtn').style.pointerEvents = 'none';
+        console.warn('Speech Synthesis не поддерживается');
+        const btn = document.getElementById('speakBtn');
+        btn.style.opacity = '0.3';
+        btn.style.pointerEvents = 'none';
         document.getElementById('speakStatus').textContent = 'недоступно';
+        isSpeechSupported = false;
         return false;
     }
+    
+    isSpeechSupported = true;
+    
+    if (window.speechSynthesis.getVoices().length === 0) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+    }
+    
     return true;
 }
 
+// Активация аудио-контекста
+document.addEventListener('click', function firstInteraction() {
+    initSpeechSynthesis();
+    
+    try {
+        if (window.AudioContext || window.webkitAudioContext) {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(err => {});
+            }
+        }
+    } catch (e) {}
+    
+    document.removeEventListener('click', firstInteraction);
+});
+
 function toggleSpeech() {
-    if (!initSpeech()) return;
+    if (!isSpeechSupported) {
+        if (!initSpeechSynthesis()) return;
+    }
+    
     if (isSpeaking) {
         stopSpeech();
-    } else {
-        startSpeech();
+        return;
     }
+    
+    if (!currentPoem) {
+        console.warn('Нет выбранного стихотворения');
+        return;
+    }
+    
+    const text = currentPoem.text.trim();
+    if (!text) {
+        console.warn('Текст пуст');
+        return;
+    }
+    
+    startSpeech();
+}
+
+function startSpeech() {
+    if (!currentPoem) return;
+    
+    if (!window.speechSynthesis) {
+        console.warn('Speech Synthesis не поддерживается');
+        return;
+    }
+    
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+    }
+    
+    const parts = getTextParts(currentPoem.text);
+    if (parts.length === 0 || parts.every(p => !p || p.trim().length === 0)) {
+        console.warn('Нет текста для воспроизведения');
+        return;
+    }
+    
+    speechQueue = [];
+    const maxRepeats = repeatCount === 0 ? 99 : repeatCount;
+    for (let r = 0; r < maxRepeats; r++) {
+        parts.forEach((text, idx) => {
+            if (text && text.trim().length > 0) {
+                speechQueue.push({ text: text.trim(), blockIndex: idx });
+            }
+        });
+    }
+    
+    if (speechQueue.length === 0) {
+        console.warn('Очередь воспроизведения пуста');
+        return;
+    }
+    
+    renderInteractiveText(currentPoem.text);
+    
+    isQueuePlaying = true;
+    isSpeaking = true;
+    
+    document.getElementById('poemText').classList.add('is-reading');
+    const btn = document.getElementById('speakBtn');
+    btn.classList.add('speaking');
+    document.getElementById('speakStatus').textContent = 'остановить';
+    
+    playNextInQueue();
+}
+
+function playNextInQueue() {
+    if (!isQueuePlaying || speechQueue.length === 0) {
+        finishSpeech();
+        return;
+    }
+    
+    const item = speechQueue.shift();
+    if (!item || !item.text || item.text.trim().length === 0) {
+        playNextInQueue();
+        return;
+    }
+    
+    setActiveBlock(item.blockIndex);
+    
+    try {
+        currentUtterance = new SpeechSynthesisUtterance(item.text);
+        currentUtterance.lang = 'ru-RU';
+        currentUtterance.rate = speechRate;
+        
+        const voices = window.speechSynthesis.getVoices();
+        const ruVoice = voices.find(v => v.lang.startsWith('ru'));
+        if (ruVoice) {
+            currentUtterance.voice = ruVoice;
+        }
+        
+        currentUtterance.onboundary = (event) => {
+            if (event.name === 'word') {
+                highlightWordInActiveBlock(event.charIndex);
+            }
+        };
+        
+        currentUtterance.onend = () => {
+            if (speechQueue.length > 0 && pauseBetween > 0) {
+                setTimeout(() => {
+                    if (isQueuePlaying) playNextInQueue();
+                }, pauseBetween);
+            } else {
+                playNextInQueue();
+            }
+        };
+        
+        currentUtterance.onerror = () => {
+            playNextInQueue();
+        };
+        
+        window.speechSynthesis.speak(currentUtterance);
+    } catch (error) {
+        console.error('Ошибка:', error);
+        playNextInQueue();
+    }
+}
+
+function finishSpeech() {
+    isSpeaking = false;
+    isQueuePlaying = false;
+    speechQueue = [];
+    currentUtterance = null;
+    resetKaraoke();
+    const btn = document.getElementById('speakBtn');
+    btn.classList.remove('speaking');
+    document.getElementById('speakStatus').textContent = 'озвучить';
+}
+
+function stopSpeech() {
+    isQueuePlaying = false;
+    speechQueue = [];
+    if (window.speechSynthesis && window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+    }
+    isSpeaking = false;
+    currentUtterance = null;
+    resetKaraoke();
+    const btn = document.getElementById('speakBtn');
+    btn.classList.remove('speaking');
+    document.getElementById('speakStatus').textContent = 'озвучить';
 }
 
 function setActiveBlock(blockIndex) {
@@ -2145,117 +2635,18 @@ function resetKaraoke() {
     currentActiveBlockNode = null;
 }
 
-function startSpeech() {
-    if (!currentPoem) return;
-    
-    if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-    }
-
-    renderInteractiveText(currentPoem.text);
-    if (currentParts.length === 0) return;
-
-    speechQueue = [];
-    const maxRepeats = repeatCount === 0 ? 99 : repeatCount;
-    for (let r = 0; r < maxRepeats; r++) {
-        currentParts.forEach((text, idx) => {
-            speechQueue.push({ text, blockIndex: idx });
-        });
-    }
-
-    isQueuePlaying = true;
-    isSpeaking = true;
-
-    document.getElementById('poemText').classList.add('is-reading');
-    const btn = document.getElementById('speakBtn');
-    btn.classList.add('speaking');
-    document.getElementById('speakStatus').textContent = 'остановить';
-
-    playNextInQueue();
-}
-
-function playNextInQueue() {
-    if (!isQueuePlaying || speechQueue.length === 0) {
-        finishSpeech();
-        return;
-    }
-
-    const item = speechQueue.shift();
-    if (!item || !item.text || item.text.trim().length === 0) {
-        playNextInQueue();
-        return;
-    }
-
-    setActiveBlock(item.blockIndex);
-
-    currentUtterance = new SpeechSynthesisUtterance(item.text);
-    currentUtterance.lang = 'ru-RU';
-    currentUtterance.rate = speechRate;
-
-    const voices = window.speechSynthesis.getVoices();
-    const ruVoice = voices.find(v => v.lang.startsWith('ru'));
-    if (ruVoice) currentUtterance.voice = ruVoice;
-
-    currentUtterance.onboundary = (event) => {
-        if (event.name === 'word') {
-            highlightWordInActiveBlock(event.charIndex);
-        }
-    };
-
-    currentUtterance.onend = () => {
-        if (speechQueue.length > 0 && pauseBetween > 0) {
-            setTimeout(() => {
-                if (isQueuePlaying) playNextInQueue();
-            }, pauseBetween);
-        } else {
-            playNextInQueue();
-        }
-    };
-
-    currentUtterance.onerror = () => {
-        playNextInQueue();
-    };
-
-    window.speechSynthesis.speak(currentUtterance);
-}
-
-function finishSpeech() {
-    isSpeaking = false;
-    isQueuePlaying = false;
-    speechQueue = [];
-    currentUtterance = null;
-    resetKaraoke();
-    const btn = document.getElementById('speakBtn');
-    btn.classList.remove('speaking');
-    document.getElementById('speakStatus').textContent = 'озвучить';
-}
-
-function stopSpeech() {
-    isQueuePlaying = false;
-    speechQueue = [];
-    if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-    }
-    isSpeaking = false;
-    currentUtterance = null;
-    resetKaraoke();
-    const btn = document.getElementById('speakBtn');
-    btn.classList.remove('speaking');
-    document.getElementById('speakStatus').textContent = 'озвучить';
-}
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 
 function init() {
-    if (window.speechSynthesis) {
-        window.speechSynthesis.getVoices();
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
-    }
-
+    initSpeechSynthesis();
+    
+    currentFiltered = [...poemsData];
     applySorting();
     if (currentFiltered.length > 0) {
         selectPoem(currentFiltered[0].id, false);
     }
+    
+    updateLearnedUI();
 
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.sort-section')) {
